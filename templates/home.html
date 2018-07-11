@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Graph{% endblock %}
+{% block content %}
+    <button class="btn btn-success" onclick="save()">Save</button>
+    <div id="cy" style="width: 100%; height: 100vh;"></div>
+{% endblock %}
+
+{% block scripts %}
+    {% csrf_token %}
+    <script>
+        let csrf_token = $('[name=csrfmiddlewaretoken]').val();
+    </script>
+
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
