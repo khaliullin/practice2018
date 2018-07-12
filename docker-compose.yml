@@ -1,0 +1,23 @@
+version: "3"
+
+services: 
+  db:
+    image: postgres:latest
+    container_name: 'postgres'
+    restart: always
+    env_file: .postgresenv
+    expose:
+      - "5432"
+
+  practice2018_web:
+    build: .
+    container_name: 'practice2018_web_container'
+    command: python3 manage.py collectstatic --noinput
+    command: python3 manage.py migrate --noinput
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes: 
+      - .:/practice2018
+    ports:
+      - '80:8000'
+    links:
+      - 'db:db'
