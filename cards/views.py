@@ -62,9 +62,10 @@ class MakeGraph(View):
             card_to = CardResponse(edge.card_to.id, edge.card_to.name, edge.card_to.description, edge.card_to.x,
                                    edge.card_to.y)
             edges.append(EdgeResponse(edge.id, card_from, card_to))
+        print(cards)
         cards_edges = {'cards': cards, 'edges': edges}
-        # json_response = json.dumps(cards_edges)
-        # print(json_response)
+        json_response = json.dumps(cards_edges,default=lambda o: o.__dict__)
+        print(json_response)
 
         # card_edges = Closure.objects.filter(card_from=card)
         # childs = [CardResponse(edge.card_to.id, edge.card_to.name, edge.card_to.description, edge.card_to.x,
@@ -73,7 +74,7 @@ class MakeGraph(View):
         #     CardChildsResponse(id=card.id, name=card.name, description=card.description, x=card.x, y=card.y,
         #                        childs=childs))
 
-        return JsonResponse(cards_edges, safe=False)
+        return HttpResponse(json_response, content_type='application/json')
 
     def post(self, request):
         return HttpResponse(status=405)
