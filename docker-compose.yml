@@ -7,15 +7,31 @@ services:
     restart: always
     env_file: .postgresenv
 
+  neo4j:
+    image: neo4j:latest
+    container_name: "practice2018_neo4j_container"
+    volumes:
+      - "./data:/data"
+    restart: on-failure
+    env_file: .neo4jenv
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
   practice2018_web:
     build: .
     container_name: 'practice2018_web_container'
     command: python3 manage.py collectstatic --noinput
     command: python3 manage.py migrate --noinput
     command: python3 manage.py runserver 0.0.0.0:8000
+    env_file: .webenv
     volumes: 
       - .:/practice2018
     ports:
       - '80:8000'
+    depends_on:
+      - db
+      - neo4j
     links:
       - 'db:db'
+      - 'neo4j:neo4j'

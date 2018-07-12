@@ -1,2 +1,8 @@
 Django==1.11
 psycopg2
+django-neomodel==0.0.4     
+neo4j-driver==1.6.0        
+neomodel==3.2.9            
+neotime==1.0.0             
+pytz==2018.5                                                                                                                                                                                                     
+six==1.11.0 
