@@ -2,8 +2,31 @@
 {% load static %}
 {% block title %}Graph{% endblock %}
 {% block content %}
-    <button class="btn btn-success" onclick="save()">Save</button>
-    <div id="cy" style="width: 100%; height: 100vh;"></div>
+    <div id="cy"></div>
+    <div id="panel">
+        <h1 class="no-margin text-center p-t-25">Graph</h1>
+        <div class="wrapper">
+            <div class="form-group w-90">
+                <label>Title</label>
+                <input type="text" class="form-control" id="title">
+                <input type="hidden" id="id">
+            </div>
+
+            <div class="form-group w-90">
+                <button class="btn btn-success" onclick="save()">Save</button>
+                <button class="btn btn-warning" onclick="merge()">Merge</button>
+            </div>
+        </div>
+
+        <div class="wrapper w-90">
+            <h4>Tips</h4>
+            <p>Create new node: <b>right click</b></p>
+            <p><b>Shift + click</b> to select</p>
+            <p><b>Backspace</b> to delete selected</p>
+            <p><b>Enter</b> to merge selected</p>
+            <p><b>Right click on edge</b> to reverse</p>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}

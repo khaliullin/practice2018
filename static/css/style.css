@@ -1,0 +1,30 @@
+#cy {
+    float: right;
+    z-index: 0;
+    width: calc(100% - 200px);
+    height: 100vh;
+}
+
+#panel {
+    z-index: 100;
+    width: 200px;
+    height: 100vh;
+    background-color: #e9e2e8;
+}
+
+.wrapper {
+    margin-top: 150px !important;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.p-t-25 {
+    padding-top: 25px;
+}
+
+.w-90 {
+    width: 90%;
+    margin-left: 5%;
+}
