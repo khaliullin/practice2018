@@ -6,8 +6,6 @@ services:
     container_name: 'postgres'
     restart: always
     env_file: .postgresenv
-    expose:
-      - "5432"
 
   practice2018_web:
     build: .
