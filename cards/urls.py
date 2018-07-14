@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'ajax/deledge$', views.DeleteEdge.as_view(), name='del_edge'),
     url(r'ajax/makegraph$', views.MakeGraph.as_view(), name='make_graph'),
     url(r'ajax/save$', views.Save.as_view(), name='save'),
+    url(r'ajax/delete$', views.Delete.as_view(), name='delete'),
+    url(r'ajax/save-all$', views.SaveAll.as_view(), name='delete'),
     url(r'$', views.Home.as_view(), name='home'),
 
 ]

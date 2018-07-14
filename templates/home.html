@@ -5,16 +5,21 @@
     <div id="cy"></div>
     <div id="panel">
         <h1 class="no-margin text-center p-t-25">Graph</h1>
-        <div class="wrapper">
+        <div class="wrapper" id="node_info" hidden>
             <div class="form-group w-90">
-                <label>Title</label>
-                <input type="text" class="form-control" id="title">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" onClick="this.select();">
                 <input type="hidden" id="id">
             </div>
 
             <div class="form-group w-90">
-                <button class="btn btn-success" onclick="save()">Save</button>
-                <button class="btn btn-warning" onclick="merge()">Merge</button>
+                <label for="description">Description</label>
+                <textarea id="description" class="form-control" cols="30" rows="10" onClick="this.select();"></textarea>
+            </div>
+
+            <div class="form-group w-90">
+                <label for="description">Progress</label>
+                <input type="number" min="0" max="100" class="form-control" id="progress">
             </div>
         </div>
 
@@ -25,6 +30,12 @@
             <p><b>Backspace</b> to delete selected</p>
             <p><b>Enter</b> to merge selected</p>
             <p><b>Right click on edge</b> to reverse</p>
+        </div>
+
+        <div class="form-group w-90">
+            <button class="btn btn-success" onclick="save()">Save</button>
+            <button class="btn btn-warning" onclick="merge()">Merge</button>
+            <button class="btn btn-default" onclick="zoomDefault()">Zoom</button>
         </div>
     </div>
 {% endblock %}

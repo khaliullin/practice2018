@@ -1,4 +1,5 @@
 import json
+from collections import namedtuple
 
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -16,6 +17,50 @@ class Home(View):
 class Save(View):
     def post(self, request):
         data = json.loads(request.POST['data'])
+        group = data['group']  # edges or nodes
+        if group == 'edges':
+            element_id = data['data']['id']
+            source_id = data['data']['source']
+            target_id = data['data']['target']
+            """
+            Тут должно быть сохранение ребра в БД. Если уже есть элемент с таким id,
+            значит юзер развернул ребро (нужно обновить). Если нет, то создать новый
+            """
+        if group == 'nodes':
+            element_id = data['data']['id']
+            x = data['position']['x']
+            y = data['position']['y']
+            name = data['data']['name']
+            description = data['data']['description']
+            description = data['data']['progress']
+            """
+            Сохранение или обновление вершины
+            """
+        return HttpResponse('OK')
+
+
+class SaveAll(View):
+    """
+    Принимает весь JSON с клиента, возвращает его же, меняя названия вершин.
+    Создан, чтобы смотреть правильный формат
+    """
+    def post(self, request):
+        data = json.loads(request.POST['data'])
+
+        for node in data['elements']['nodes']:
+            node['data']['name'] = 'qwert'
+        print(data)
+        return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+class Delete(View):
+    def post(self, request):
+        data = json.loads(request.POST['data'])
+
+        for element in data:
+            el_id = element['id']
+            group = element['group']
+            # удаляем из базы
         return HttpResponse('OK')
 
 

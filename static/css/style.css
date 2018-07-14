@@ -13,7 +13,7 @@
 }
 
 .wrapper {
-    margin-top: 150px !important;
+    margin-top: 120px !important;
 }
 
 .no-margin {
@@ -27,4 +27,10 @@
 .w-90 {
     width: 90%;
     margin-left: 5%;
+}
+
+#description {
+    resize: vertical;
+    max-height: 200px;
+    min-height: 30px;
 }
