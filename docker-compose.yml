@@ -39,12 +39,10 @@ services:
   practice2018_web:
     build: .
     container_name: 'practice2018_web_container'
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: python3 manage.py runserver 0.0.0.0:$PORT
     env_file: .webenv
     volumes: 
       - .:/practice2018
-    ports:
-      - '80:8000'
     depends_on:
       - practice2018_options
       - db
