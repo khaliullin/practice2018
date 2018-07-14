@@ -25,7 +25,7 @@ SECRET_KEY = 'j%1j3tb%9&a=-^(qz_f_%f1-_vmig&9b*orhkpf35pl^@k!ybh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['practice2018.herokuapp.com',]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cards.apps.CardsConfig',
+    'django_neomodel'
 ]
 
 MIDDLEWARE = [
@@ -85,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'an2Rmx1sw',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': 5432,
     }
@@ -94,8 +95,22 @@ DATABASES = {
 if os.environ.get('DOCKER_SERVER'):
     DATABASES.pop('default')
     DATABASES['default'] = DATABASES['postgres']
-else:
-    DATABASES.pop('postgres')
+
+#NEOMODEL
+NEO4J_CREDENTIALS = {
+    'username': os.environ.get('NEO4J_USER'),
+    'password': os.environ.get('NEO4J_PASSWORD')
+}
+NEOMODEL_NEO4J_BOLT_URL = f"bolt://{NEO4J_CREDENTIALS['username']}:{NEO4J_CREDENTIALS['password']}@neo4j:7687"
+NEOMODEL_SIGNALS = True
+NEOMODEL_FORCE_TIMEZONE = False
+NEOMODEL_ENCRYPTED_CONNECTION = True
+NEOMODEL_MAX_POOL_SIZE = 50
+
+# Default config url for neomodel db driver
+from neomodel import config
+config.DATABASE_URL = NEOMODEL_NEO4J_BOLT_URL
+
 
 
 # Password validation

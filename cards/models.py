@@ -1,6 +1,5 @@
 from django.db import models
-
-# Create your models here.
+from neomodel import StructuredNode, StringProperty, DateProperty, IntegerProperty, RelationshipTo
 
 
 class Card(models.Model):
@@ -12,3 +11,12 @@ class Card(models.Model):
 class Closure(models.Model):
     card_from = models.ForeignKey(Card, on_delete=models.CASCADE, null=False, blank=False, related_name='card_from_closures')
     card_to = models.ForeignKey(Card, on_delete=models.CASCADE, null=False, blank=False, related_name='card_to_closures')
+
+
+class NeoCard(StructuredNode):
+    name = StringProperty(required=True, unique_index=True)
+    description = StringProperty()
+    x = IntegerProperty(default=0)
+    y = IntegerProperty(default=0)
+    parents = RelationshipTo('NeoCard', 'CHILDS')
+    childs = RelationshipTo('NeoCard', 'CHILDS')
