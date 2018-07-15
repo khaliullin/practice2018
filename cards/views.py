@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
 
-from cards.helper import CardResponse, EdgeResponse, save_card, save_edge
+from cards.helper import CardResponse, EdgeResponse, save_card, save_edge, delete_edge, delete_card, get_json_data
 from cards.models import Card, UserEdges, UserCards
 
 
@@ -23,7 +23,7 @@ class Save(View):
             element_id = data['data']['id']
             source_id = data['data']['source']
             target_id = data['data']['target']
-            save_edge(element_id,source_id,target_id,request)
+            save_edge(element_id, source_id, target_id, request)
             """
             Тут должно быть сохранение ребра в БД. Если уже есть элемент с таким id,
             значит юзер развернул ребро (нужно обновить). Если нет, то создать новый
@@ -60,11 +60,15 @@ class SaveAll(View):
 class Delete(View):
     def post(self, request):
         data = json.loads(request.POST['data'])
-        print(data)
         for element in data:
             el_id = element['id']
             group = element['group']
-            # удаляем из базы
+            delete_edge(el_id, request) if group == 'edges' else delete_card(el_id, request)
         return HttpResponse('OK')
+
+class Retrieve(View):
+    def get(self,request):
+        json_data = get_json_data(request)
+        return HttpResponse(json.dumps(json_data), content_type='application/json')
 
 
