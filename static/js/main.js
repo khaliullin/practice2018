@@ -5,6 +5,7 @@ let cy = cytoscape({
         .css({
             'content': 'data(name)',
             'text-valign': 'center',
+            'background-color': '#888',
             'color': 'white',
             'text-outline-width': 2,
             'border-opacity': 0.5,
@@ -25,24 +26,24 @@ let cy = cytoscape({
         })
         .selector(':selected')
         .css({
-            'background-color': 'black',
-            'line-color': 'black',
+            'background-color': '#515151',
+            'line-color': '#515151',
             'target-arrow-color': 'black',
             'source-arrow-color': 'black',
-            'text-outline-color': 'black'
+            'text-outline-color': '#515151'
         }),
     elements: {
         nodes: [
             {
-                data: {id: 'el1', name: 'Element1', description: "", progress: 0},
+                data: {id: 'el1', name: 'Element1', description: "Some description", progress: 0},
                 position: {x: 0, y: 0}
             },
             {
-                data: {id: 'el2', name: 'Element2', description: "", progress: 0},
+                data: {id: 'el2', name: 'Element2', description: "Some description", progress: 0},
                 position: {x: 0, y: 150}
             },
             {
-                data: {id: 'el3', name: 'Element3', description: "", progress: 0},
+                data: {id: 'el3', name: 'Element3', description: "Some description", progress: 0},
                 position: {x: -150, y: 150}
             }
         ],
@@ -60,6 +61,8 @@ let cy = cytoscape({
 // Get NODE by tap
 cy.on('tap', 'node', function (evt) {
     var node = evt.target;
+    if (tipp)
+        tipp.hide();
     console.log(node);
     prepareEdit(node);
 });
@@ -109,7 +112,12 @@ function createNode(e) {
 
         let id = 'id' + Math.abs(parseInt(x, 10)) + '_' + Math.abs(parseInt(y, 10));
 
-        let new_node = {group: "nodes", data: {id: id, name: "New", description: "", progress: 0}, position: {x: x, y: y}, selected: true};
+        let new_node = {
+            group: "nodes",
+            data: {id: id, name: "New", description: "", progress: 0},
+            position: {x: x, y: y},
+            selected: true
+        };
         cy.add(new_node);
         console.log(new_node);
 
@@ -234,7 +242,7 @@ function sendRemove(elements) {
     $.each(elements, function (ind, el) {
 
         to_delete.push({
-            id:   el.id(),
+            id: el.id(),
             group: el.group()
         });
     });
@@ -284,6 +292,7 @@ grab = false;
 position_x = undefined;
 position_y = undefined;
 cy.on('grab', 'node', function (event) {
+    hideTipp();
     position_x = event.position.x;
     position_y = event.position.y;
     grab = true;
@@ -298,3 +307,40 @@ cy.on('tapend', function (event) {
         }
     grab = false
 });
+
+
+// Description tippy
+tipp = undefined;
+var makeTippy = function(node, text){
+    return tippy( node.popperRef(), {
+        html: (function(){
+            var div = document.createElement('div');
+            div.innerHTML = text;
+            return div;
+        })(),
+        trigger: 'manual',
+        arrow: true,
+        size: 'large',
+        placement: 'bottom',
+        hideOnClick: false,
+        multiple: true,
+        sticky: true
+    } ).tooltips[0];
+};
+
+cy.on('tapdragover', 'node', function (e) {
+    let description = e.target.data('description');
+    if (description) {
+        tipp = makeTippy(e.target, e.target.data('description'));
+        tipp.show();
+    }
+});
+
+cy.on('tapdragout', 'node', function (e) {
+    hideTipp();
+});
+
+function hideTipp() {
+    if (tipp)
+        tipp.hide();
+}
