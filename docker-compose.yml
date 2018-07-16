@@ -7,7 +7,7 @@ services:
     restart: always
     env_file: .postgresenv
     volumes: 
-      - "./postgresqldata:/var/lib/postgresql/data"
+      - "postgresqldata:/var/lib/postgresql/data"
 
   neo4j:
     image: neo4j:latest
@@ -28,7 +28,7 @@ services:
                  python3 manage.py migrate --noinput"
     env_file: .webenv
     volumes: 
-      - .:/practice2018
+      - '.:/practice2018'
     depends_on:
       - db
       - neo4j
@@ -39,10 +39,12 @@ services:
   practice2018_web:
     build: .
     container_name: 'practice2018_web_container'
-    command: python3 manage.py runserver 0.0.0.0:$PORT
+    command: python3 manage.py runserver 0.0.0.0:8000
     env_file: .webenv
     volumes: 
-      - .:/practice2018
+      - '.:/practice2018:ro'
+    ports:
+      - '80:8000'
     depends_on:
       - practice2018_options
       - db
@@ -50,3 +52,7 @@ services:
     links:
       - 'db:db'
       - 'neo4j:neo4j'
+
+volumes:
+  postgresqldata:
+        

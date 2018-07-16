@@ -20,12 +20,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'j%1j3tb%9&a=-^(qz_f_%f1-_vmig&9b*orhkpf35pl^@k!ybh'
+print(os.environ.get('SECRET_KEY'))
+SECRET_KEY = os.environ.get('SECRET_KEY', 'j%1j3tb%9&a=-^(qz_f_%f1-_vmig&9b*orhkpf35pl^@k!ybh')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['practice2018.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'practice2018.herokuapp.com',
+    '0.0.0.0',
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -38,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cards.apps.CardsConfig',
-    'django_neomodel'
+    'django_neomodel',
+    'neocards',
 ]
 
 MIDDLEWARE = [
@@ -108,10 +114,17 @@ NEOMODEL_ENCRYPTED_CONNECTION = True
 NEOMODEL_MAX_POOL_SIZE = 50
 
 # Default config url for neomodel db driver
-# from neomodel import config
-# config.DATABASE_URL = NEOMODEL_NEO4J_BOLT_URL
 
+if os.environ.get('DOCKER_SERVER'):
+    DATABASES.pop('default')
+    DATABASES['default'] = DATABASES['postgres']
+    NEOMODEL_NEO4J_BOLT_URL = f"bolt://{NEO4J_CREDENTIALS['username']}:{NEO4J_CREDENTIALS['password']}@neo4j:7687"
+else:
+    #Ivan: put here your configurations of databases, such as NEOMODEL_NEO4J_BOLT_URL
+    pass
 
+from neomodel import config
+config.DATABASE_URL = NEOMODEL_NEO4J_BOLT_URL
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

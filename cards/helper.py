@@ -5,49 +5,6 @@ from cards.models import UserCards, Card, UserEdges
 from practice2018.settings import BASE_DIR
 
 
-class CardChildsResponse(object):
-    id = None
-    name = None
-    description = None
-    x = None
-    y = None
-    childs = []
-
-    def __init__(self, id, name, description, x, y, childs):
-        self.id = id
-        self.name = name,
-        self.description = description,
-        self.x = x,
-        self.y = y,
-        self.childs = childs
-
-
-class CardResponse(object):
-    id = None
-    name = None
-    description = None
-    x = None
-    y = None
-
-    def __init__(self, id, name, description, x, y):
-        self.id = id
-        self.name = name,
-        self.description = description,
-        self.x = x
-        self.y = y
-
-
-class EdgeResponse(object):
-    id = None
-    card_from = None
-    card_to = None
-
-    def __init__(self, id, card_from, card_to):
-        self.id = id
-        self.card_from = card_from
-        self.card_to = card_to
-
-
 def save_card(element_id, x, y, name, description, progress, request):
     if request.user.is_anonymous:
         if not request.session.session_key:
@@ -135,7 +92,7 @@ def delete_edge(element_id, request):
 
 def get_json_data(request):
     json_data = {}
-    users_cards, users_edges = [],[]
+    users_cards, users_edges = [], []
     if request.user.is_anonymous:
         if not request.session.session_key:
             request.session.save()
@@ -151,7 +108,7 @@ def get_json_data(request):
         data = {'id': card.card_id, 'name': card.name, 'description': card.description, 'progress': card.progress}
         position = {'x': card.x, 'y': card.y}
         json_node_template = {}
-        with open(os.path.join(BASE_DIR, 'static','json_templates','json_node_template.json')) as f:
+        with open(os.path.join(BASE_DIR, 'static', 'json_templates', 'json_node_template.json')) as f:
             json_node_template = json.load(f)
             f.close()
         data_position = {'data': data, 'position': position, 'locked': 'false'}
@@ -161,20 +118,16 @@ def get_json_data(request):
     for user_edge in users_edges:
         data = {'source': user_edge.card_from.card_id, 'target': user_edge.card_to.card_id, 'id': user_edge.edge_id}
         json_edge_template = {}
-        with open(os.path.join(BASE_DIR, 'static','json_templates','json_edge_template.json')) as f:
+        with open(os.path.join(BASE_DIR, 'static', 'json_templates', 'json_edge_template.json')) as f:
             json_edge_template = json.load(f)
             f.close()
-        data_dict = {'data':data}
+        data_dict = {'data': data}
         edge = {**data_dict, **json_edge_template}
         edges.append(edge)
     json_template = {}
-    with open(os.path.join(BASE_DIR, 'static','json_templates','json_common_template.json')) as f:
+    with open(os.path.join(BASE_DIR, 'static', 'json_templates', 'json_common_template.json')) as f:
         json_template = json.load(f)
-    elements = {'nodes':nodes,'edges':edges}
-    elements = {'elements':elements}
+    elements = {'nodes': nodes, 'edges': edges}
+    elements = {'elements': elements}
     json_response = {**elements, **json_template}
     return json_response
-
-
-
-

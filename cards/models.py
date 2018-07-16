@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
-from neomodel import StructuredNode, StringProperty, DateProperty, IntegerProperty, RelationshipTo
+from neomodel import StructuredNode, StringProperty, DateProperty, IntegerProperty, RelationshipTo, RelationshipFrom, \
+    UniqueIdProperty
 
 
 class Card(models.Model):
-    name = models.CharField(max_length=50, null=False,blank=False)
+    name = models.CharField(max_length=50, null=False, blank=False)
     description = models.CharField(max_length=200, null=True, blank=True)
     card_id = models.CharField(max_length=15)
     x = models.IntegerField(default=0)
@@ -34,10 +35,3 @@ class UserCards(models.Model):
         unique_together = (('user', 'card'), ('session_key', 'card'),)
 
 
-class NeoCard(StructuredNode):
-    name = StringProperty(required=True, unique_index=True)
-    description = StringProperty()
-    x = IntegerProperty(default=0)
-    y = IntegerProperty(default=0)
-    parents = RelationshipTo('NeoCard', 'CHILDS')
-    childs = RelationshipTo('NeoCard', 'CHILDS')
