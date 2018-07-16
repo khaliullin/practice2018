@@ -66,6 +66,7 @@ class Delete(View):
             delete_edge(el_id, request) if group == 'edges' else delete_card(el_id, request)
         return HttpResponse('OK')
 
+
 class Retrieve(View):
     def get(self,request):
         json_data = get_json_data(request)

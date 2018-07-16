@@ -1,3 +1,10 @@
+function getColor(value) {
+    value /= 100;
+    var hue = ((value) * 90).toString(10);
+    return ["hsl(", hue, ",90%,35%)"].join("");
+}
+
+
 let cy = cytoscape({
     container: document.getElementById('cy'),
     style: cytoscape.stylesheet()
@@ -12,7 +19,9 @@ let cy = cytoscape({
             'text-outline-color': '#888',
             'width': 100,
             'height': 40,
-            'shape': 'square'
+            'shape': 'square',
+            'border-color': 'data(color)',
+            'border-width': '5px'
         })
         .selector('edge')
         .css({
@@ -35,21 +44,22 @@ let cy = cytoscape({
     elements: {
         nodes: [
             {
-                data: {id: 'el1', name: 'Element1', description: "Some description", progress: 0},
-                position: {x: 0, y: 0}
+                data: {id: 'el1', name: 'Hello', description: "Some description", progress: 0, color: "white"},
+                position: {x: 0, y: 0},
+                params: 0
             },
             {
-                data: {id: 'el2', name: 'Element2', description: "Some description", progress: 0},
-                position: {x: 0, y: 150}
+                data: {id: 'el2', name: 'Element2', description: "Some description", progress: 0, color: "white"},
+                position: {x: 0, y: 150},
             },
             {
-                data: {id: 'el3', name: 'Element3', description: "Some description", progress: 0},
-                position: {x: -150, y: 150}
+                data: {id: 'el3', name: 'Element3', description: "Some description", progress: 0, color: "white"},
+                position: {x: -150, y: 150},
             }
         ],
         edges: [
-            {data: {source: 'el1', target: 'el2'}},
-            {data: {source: 'el2', target: 'el3'}},
+            // {data: {source: 'el1', target: 'el2'}},
+            // {data: /{source: 'el2', target: 'el3'}},
         ]
     },
     layout: {
@@ -88,7 +98,7 @@ cy.on('cxttapend', 'edge', function (evt) {
 function reverseEdge(edge) {
     source_id = edge._private.data.source;
     target_id = edge._private.data.target;
-    let id = target_id + '_' + source_id;
+    let id = edge.id();
     edge.remove();
     cy.add({
         group: "edges",
@@ -114,7 +124,7 @@ function createNode(e) {
 
         let new_node = {
             group: "nodes",
-            data: {id: id, name: "New", description: "", progress: 0},
+            data: {id: id, name: "New", description: "", progress: 0, color: "white"},
             position: {x: x, y: y},
             selected: true
         };
@@ -204,10 +214,12 @@ $('#description').bind('change', function () {
 });
 
 // Change progress
-$('#progress').bind('change', function () {
+$('#progress').bind('focusout', function () {
     let id = $('#id').val();
-    cy.$('#' + id).data('progress', $(this).val());
-
+    if ($(this).val() <= 100) {
+        cy.$('#' + id).data('progress', $(this).val());
+        cy.$('#' + id).data('color', getColor($(this).val()));
+    }
     saveModel(id);
 });
 
@@ -263,10 +275,6 @@ function sendRemove(elements) {
 }
 
 
-// let json = JSON.parse('{"elements":{"nodes":[{"data":{"id":"id140_23","name":"1","description":"1","progress":"1"},"position":{"x":-140.98167938931294,"y":-23.106870229007626},"group":"nodes","removed":false,"selected":false,"selectable":true,"locked":false,"grabbable":true,"classes":""},{"data":{"id":"id57_78","name":"3","description":"3","progress":"3"},"position":{"x":-57.4946564885496,"y":78.07786259541984},"group":"nodes","removed":false,"selected":true,"selectable":true,"locked":false,"grabbable":true,"classes":""},{"data":{"id":"id21_9","name":"2","description":"2","progress":"2"},"position":{"x":-21.714503816793876,"y":9.59541984732825},"group":"nodes","removed":false,"selected":false,"selectable":true,"locked":false,"grabbable":true,"classes":""}],"edges":[{"data":{"id":"id140_23_id21_9","source":"id140_23","target":"id21_9"},"position":{},"group":"edges","removed":false,"selected":false,"selectable":true,"locked":false,"grabbable":true,"classes":""},{"data":{"id":"id57_78_id21_9","source":"id57_78","target":"id21_9"},"position":{},"group":"edges","removed":false,"selected":false,"selectable":true,"locked":false,"grabbable":true,"classes":""}]},"style":[{"selector":"node","style":{"text-valign":"center","color":"white","text-outline-color":"#888","text-outline-width":"2px","height":"40px","width":"100px","shape":"square","border-opacity":"0.5","label":"data(name)"}},{"selector":"edge","style":{"width":"4px","line-color":"#888","curve-style":"bezier","target-arrow-shape":"triangle","source-arrow-color":"#888","target-arrow-color":"#888","label":"data(name)"}},{"selector":":selected","style":{"text-outline-color":"black","background-color":"black","line-color":"black","source-arrow-color":"black","target-arrow-color":"black"}}],"zoomingEnabled":true,"userZoomingEnabled":true,"zoom":2.5992063492063493,"minZoom":0.5,"maxZoom":3,"panningEnabled":true,"userPanningEnabled":true,"pan":{"x":552.4404761904761,"y":277.0595238095238},"boxSelectionEnabled":true,"renderer":{"name":"canvas"}}');
-// cy.json(json);
-
-
 // Send all data to server (deprecated)
 function save() {
     let data = cy.json();
@@ -311,9 +319,9 @@ cy.on('tapend', function (event) {
 
 // Description tippy
 tipp = undefined;
-var makeTippy = function(node, text){
-    return tippy( node.popperRef(), {
-        html: (function(){
+var makeTippy = function (node, text) {
+    return tippy(node.popperRef(), {
+        html: (function () {
             var div = document.createElement('div');
             div.innerHTML = text;
             return div;
@@ -325,7 +333,7 @@ var makeTippy = function(node, text){
         hideOnClick: false,
         multiple: true,
         sticky: true
-    } ).tooltips[0];
+    }).tooltips[0];
 };
 
 cy.on('tapdragover', 'node', function (e) {
@@ -344,3 +352,18 @@ function hideTipp() {
     if (tipp)
         tipp.hide();
 }
+
+
+// Get user data from server
+$(document).ready(function () {
+    $.ajax({
+        type: 'GET',
+        url: '/ajax/retrieve',
+        success: function (response) {
+            console.log(response);
+            cy.json(response);
+            cy.zoom(1);
+        }
+    });
+});
+

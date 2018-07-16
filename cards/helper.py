@@ -154,7 +154,7 @@ def get_json_data(request):
         with open(os.path.join(BASE_DIR, 'static','json_templates','json_node_template.json')) as f:
             json_node_template = json.load(f)
             f.close()
-        data_position = {'data': data, 'position': position}
+        data_position = {'data': data, 'position': position, 'locked': 'false'}
         node = {**data_position, **json_node_template}
         nodes.append(node)
     edges = []

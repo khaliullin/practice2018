@@ -25,7 +25,7 @@ SECRET_KEY = 'j%1j3tb%9&a=-^(qz_f_%f1-_vmig&9b*orhkpf35pl^@k!ybh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['practice2018.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['practice2018.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -108,8 +108,8 @@ NEOMODEL_ENCRYPTED_CONNECTION = True
 NEOMODEL_MAX_POOL_SIZE = 50
 
 # Default config url for neomodel db driver
-from neomodel import config
-config.DATABASE_URL = NEOMODEL_NEO4J_BOLT_URL
+# from neomodel import config
+# config.DATABASE_URL = NEOMODEL_NEO4J_BOLT_URL
 
 
 
