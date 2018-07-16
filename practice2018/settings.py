@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cards.apps.CardsConfig',
-    'django_neomodel'
+    'django_neomodel',
+    'neocards',
 ]
 
 MIDDLEWARE = [

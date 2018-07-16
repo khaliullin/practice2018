@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('cards.urls', namespace='cards'))
+    url(r'^', include('cards.urls', namespace='cards')),
+    url(r'^neo', include('neocards.urls',namespace='neo_cards')),
 ]

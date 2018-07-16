@@ -1,17 +1,10 @@
 import json
-from collections import namedtuple
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from cards.helper import save_card, save_edge, delete_edge, delete_card, get_json_data
-from cards.models import Card, UserEdges, UserCards
-
-
-class Home(View):
-    def get(self, request):
-        return render(request, 'home.html', {})
+from neocards.neohelper import save_edge, save_card, delete_edge, delete_card, get_json_data
 
 
 class Save(View):
@@ -70,5 +63,3 @@ class Retrieve(View):
     def get(self,request):
         json_data = get_json_data(request)
         return HttpResponse(json.dumps(json_data), content_type='application/json')
-
-
