@@ -1,6 +1,22 @@
-version: "3"
+version: "3.2"
 
 services: 
+
+  nginx:
+    build: ./nginx
+    container_name: "practice2018_nginx_container"
+    image: practice2018_nginx:latest
+    ports:
+      - '80:80'
+    volumes:
+      - "./nginx/sites-enabled:/etc/nginx/sites-enabled:ro"                                                                                                                                                         
+      - "./nginx/logs/:/var/log/nginx"
+      - /www/static        
+      - /www/media
+      - '.:/practice2018:ro'
+    links:
+      - 'practice2018_web:web'  
+
   db:
     image: postgres:latest
     container_name: 'postgres'
@@ -39,12 +55,11 @@ services:
   practice2018_web:
     build: .
     container_name: 'practice2018_web_container'
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: >
+      bash -c "./wait-for.sh -t 20 db:5432 -- uwsgi --ini /practice2018/uwsgi/uwsgi.ini"
     env_file: .webenv
     volumes: 
       - '.:/practice2018:ro'
-    ports:
-      - '80:8000'
     depends_on:
       - practice2018_options
       - db
@@ -55,4 +70,3 @@ services:
 
 volumes:
   postgresqldata:
-        

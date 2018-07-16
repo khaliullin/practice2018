@@ -4,6 +4,9 @@ MAINTAINER TimurMardanov timurmardanov97@gmail.com
 ENV PYTHONBUFFERED 1
 ENV DOCKER_SERVER True
 
+RUN apt-get update && apt-get install -y && \
+    pip3 install uwsgi
+
 
 RUN mkdir /practice2018
 WORKDIR /practice2018
