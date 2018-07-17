@@ -362,8 +362,9 @@ $(document).ready(function () {
             cy.json(response);
             cy.zoom(1);
 
-            if (response.elements.nodes.length === 0) {
-                // alert("Welcome!");
+            if (response.elements.nodes.length !== 0) {
+                console.log("vcvcc");
+                $('#toggle-btn').bootstrapToggle('toggle')
             }
         }
     });

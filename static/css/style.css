@@ -6,7 +6,7 @@
 }
 
 #panel {
-    z-index: 100;
+    z-index: 10000;
     width: 200px;
     height: 100vh;
     background-color: #edeef06b;
@@ -14,7 +14,7 @@
 }
 
 .wrapper {
-    margin-top: 120px !important;
+    margin-top: 40px !important;
 }
 
 .no-margin {
@@ -51,13 +51,17 @@
 }
 
 .tips {
-    width: 200px;
-    bottom: 80px;
-    left: 7px;
-    position: fixed;
+    padding-top: 40px;
+    /*width: 200px;*/
+    /*bottom: 80px;*/
+    /*left: 7px;*/
+    /*position: fixed;*/
 }
 
-
+.outer {
+    max-height: 80vh;
+    overflow: scroll;
+}
 
 
 
