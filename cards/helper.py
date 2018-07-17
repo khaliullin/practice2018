@@ -5,7 +5,7 @@ from cards.models import UserCards, Card, UserEdges
 from practice2018.settings import BASE_DIR
 
 
-def save_card(element_id, x, y, name, description, progress, request):
+def save_card(element_id, x, y, name, description, progress, color, request):
     if request.user.is_anonymous:
         if not request.session.session_key:
             request.session.save()
@@ -16,11 +16,11 @@ def save_card(element_id, x, y, name, description, progress, request):
             card.name = name
             card.description = description
             card.progress = progress
-            card.card_id = element_id
+            card.color = color
             card.save()
         else:
             card = Card.objects.create(card_id=element_id, x=x, y=y, name=name, description=description,
-                                       progress=progress)
+                                       progress=progress, color=color)
             UserCards.objects.create(session_key=request.session.session_key, card=card)
     else:
         if UserCards.objects.filter(user=request.user, card__card_id=element_id).exists():
@@ -30,11 +30,11 @@ def save_card(element_id, x, y, name, description, progress, request):
             card.name = name
             card.description = description
             card.progress = progress
-            card.card_id = element_id
+            card.color = color
             card.save()
         else:
             card = Card.objects.create(card_id=element_id, x=x, y=y, name=name, description=description,
-                                       progress=progress)
+                                       progress=progress, color=color)
             UserCards.objects.create(user=request.user, card=card)
 
 
@@ -105,7 +105,8 @@ def get_json_data(request):
     nodes = []
     for user_card in users_cards:
         card = user_card.card
-        data = {'id': card.card_id, 'name': card.name, 'description': card.description, 'progress': card.progress}
+        data = {'id': card.card_id, 'name': card.name, 'description': card.description, 'progress': card.progress,
+                'color': card.color}
         position = {'x': card.x, 'y': card.y}
         json_node_template = {}
         with open(os.path.join(BASE_DIR, 'static', 'json_templates', 'json_node_template.json')) as f:
@@ -127,7 +128,9 @@ def get_json_data(request):
     json_template = {}
     with open(os.path.join(BASE_DIR, 'static', 'json_templates', 'json_common_template.json')) as f:
         json_template = json.load(f)
+        f.close()
     elements = {'nodes': nodes, 'edges': edges}
     elements = {'elements': elements}
     json_response = {**elements, **json_template}
+    print(json_response)
     return json_response

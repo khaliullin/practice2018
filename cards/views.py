@@ -35,7 +35,8 @@ class Save(View):
             name = data['data']['name']
             description = data['data']['description']
             progress = data['data']['progress']
-            save_card(element_id, x, y, name, description, progress, request)
+            color = data['data']['color']
+            save_card(element_id, x, y, name, description, progress, color, request)
             """
             Сохранение или обновление вершины
             """
@@ -68,8 +69,6 @@ class Delete(View):
 
 
 class Retrieve(View):
-    def get(self,request):
+    def get(self, request):
         json_data = get_json_data(request)
         return HttpResponse(json.dumps(json_data), content_type='application/json')
-
-

@@ -11,6 +11,7 @@ class Card(models.Model):
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)
     progress = models.IntegerField(default=0)
+    color = models.CharField(max_length=25)
 
 
 class UserEdges(models.Model):
