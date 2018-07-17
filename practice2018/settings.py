@@ -27,6 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'j%1j3tb%9&a=-^(qz_f_%f1-_vmig&9b*orhk
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'node-django.com',
     'practice2018.herokuapp.com',
     '0.0.0.0',
     '127.0.0.1'
