@@ -1,1 +1,57 @@
-{"style": [{"selector": "node", "style": {"text-valign": "center", "color": "white", "text-outline-color": "#888", "text-outline-width": "2px", "height": "40px", "width": "100px", "shape": "square", "background-color": "#888", "border-opacity": "0.5", "label": "data(name)"}}, {"selector": "edge", "style": {"width": "4px", "line-color": "#888", "curve-style": "bezier", "target-arrow-shape": "triangle", "source-arrow-color": "#888", "target-arrow-color": "#888", "label": "data(name)"}}, {"selector": ":selected", "style": {"text-outline-color": "#515151", "background-color": "#515151", "line-color": "#515151", "source-arrow-color": "black", "target-arrow-color": "black"}}], "zoomingEnabled": "True", "userZoomingEnabled": "True", "zoom": 3.5, "minZoom": 0.5, "maxZoom": 3, "panningEnabled": "True", "userPanningEnabled": "True", "pan": {"x": 930.5, "y": 103.5}, "boxSelectionEnabled": "True", "renderer": {"name": "canvas"}}
+{
+  "style": [
+    {
+      "selector": "node",
+      "style": {
+        "text-valign": "center",
+        "color": "white",
+        "text-outline-color": "#a9a9a9",
+        "text-outline-width": "2px",
+        "height": "40px",
+        "width": "100px",
+        "shape": "square",
+        "background-color": "#a9a9a9",
+        "border-opacity": "0.7",
+        "label": "data(name)",
+        "border-color": "data(color)",
+        "border-width": "5px"
+      }
+    },
+    {
+      "selector": "edge",
+      "style": {
+        "width": "4px",
+        "line-color": "#a9a9a9",
+        "curve-style": "bezier",
+        "target-arrow-shape": "triangle",
+        "source-arrow-color": "#a9a9a9",
+        "target-arrow-color": "#a9a9a9"
+      }
+    },
+    {
+      "selector": ":selected",
+      "style": {
+        "text-outline-color": "#515151",
+        "background-color": "#515151",
+        "line-color": "#515151",
+        "source-arrow-color": "#515151",
+        "target-arrow-color": "#515151"
+      }
+    }
+  ],
+  "zoomingEnabled": "True",
+  "userZoomingEnabled": "True",
+  "zoom": 3.5,
+  "minZoom": 0.5,
+  "maxZoom": 3,
+  "panningEnabled": "True",
+  "userPanningEnabled": "True",
+  "pan": {
+    "x": 930.5,
+    "y": 103.5
+  },
+  "boxSelectionEnabled": "True",
+  "renderer": {
+    "name": "canvas"
+  }
+}

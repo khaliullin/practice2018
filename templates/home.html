@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Graph{% endblock %}
+{% block title %}Grapher{% endblock %}
 {% block content %}
     <div id="cy"></div>
     <div id="panel">
-        <h1 class="no-margin text-center p-t-25">Graph</h1>
+        <h1 class="no-margin text-center p-t-25">Graph<span class="beauty">er</span></h1>
         <div class="wrapper" id="node_info" hidden>
             <div class="form-group w-90">
                 <label for="title">Title</label>
@@ -13,29 +13,45 @@
             </div>
 
             <div class="form-group w-90">
-                <label for="description">Description</label>
-                <textarea id="description" class="form-control" cols="30" rows="10" onClick="this.select();"></textarea>
+                <label for="progress">Progress</label>
+                <br>
+                <div class="slidecontainer">
+                    <input type="range" min="0" max="100" value="0" class="slider" id="progress">
+                </div>
             </div>
 
             <div class="form-group w-90">
-                <label for="progress">Progress</label>
-                <input type="number" min="0" max="100" class="form-control" id="progress">
+                <label for="description">Description</label>
+                <textarea id="description" class="form-control" cols="30" rows="10" onClick="this.select();"></textarea>
             </div>
         </div>
 
-        <div class="wrapper w-90">
-            <h4>Tips</h4>
-            <p>Create new node: <b>right click</b></p>
-            <p><b>Shift + click</b> to select</p>
-            <p><b>Backspace</b> to delete selected</p>
-            <p><b>Enter</b> to merge selected</p>
-            <p><b>Right click on edge</b> to reverse</p>
+
+        <div id="tips" class="wrapper tips">
+            <p><b>Create node:</b> right click</p>
+            <p><b>Select few:</b> Shift + click</p>
+            <p><b>Delete:</b> Backspace</p>
+            <p><b>Merge selected:</b> Enter</p>
+            <p><b>Reverse edge:</b> right click on edge</p>
         </div>
 
-        <div class="form-group w-90">
-            <button class="btn btn-success" onclick="save()">Save</button>
-            <button class="btn btn-warning" onclick="merge()">Merge</button>
-            <button class="btn btn-default" onclick="zoomDefault()">Zoom</button>
+        <div class="tips-button bottom">
+            Show tips
+            <input type="checkbox" id="toggle-btn" checked data-toggle="toggle" data-onstyle="default">
+            <script>
+                $(function () {
+                    $('#toggle-btn').change(function () {
+                        let show = $(this).prop('checked');
+                        console.log(show);
+                        if (show) {
+                            $('#tips').show('fast');
+                        }
+                        else {
+                            $('#tips').hide('fast');
+                        }
+                    })
+                })
+            </script>
         </div>
     </div>
 {% endblock %}

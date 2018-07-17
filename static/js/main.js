@@ -12,11 +12,11 @@ let cy = cytoscape({
         .css({
             'content': 'data(name)',
             'text-valign': 'center',
-            'background-color': '#888',
+            'background-color': '#a9a9a9',
             'color': 'white',
             'text-outline-width': 2,
-            'border-opacity': 0.5,
-            'text-outline-color': '#888',
+            'border-opacity': 0.7,
+            'text-outline-color': '#a9a9a9',
             'width': 100,
             'height': 40,
             'shape': 'square',
@@ -29,37 +29,35 @@ let cy = cytoscape({
             'width': 4,
             'target-arrow-shape': 'triangle',
             'curve-style': 'bezier',
-            'line-color': '#888',
-            'target-arrow-color': '#888',
-            'source-arrow-color': '#888',
+            'line-color': '#a9a9a9',
+            'target-arrow-color': '#a9a9a9',
+            'source-arrow-color': '#a9a9a9',
         })
         .selector(':selected')
         .css({
             'background-color': '#515151',
             'line-color': '#515151',
-            'target-arrow-color': 'black',
-            'source-arrow-color': 'black',
+            'target-arrow-color': '#515151',
+            'source-arrow-color': '#515151',
             'text-outline-color': '#515151'
         }),
     elements: {
         nodes: [
-            {
-                data: {id: 'el1', name: 'Hello', description: "Some description", progress: 0, color: "white"},
-                position: {x: 0, y: 0},
-                params: 0
-            },
-            {
-                data: {id: 'el2', name: 'Element2', description: "Some description", progress: 0, color: "white"},
-                position: {x: 0, y: 150},
-            },
-            {
-                data: {id: 'el3', name: 'Element3', description: "Some description", progress: 0, color: "white"},
-                position: {x: -150, y: 150},
-            }
+            // {
+            //     data: {id: 'el1', name: 'Hello', description: "Some description", progress: 0, color: "white"},
+            //     position: {x: 0, y: 0},
+            // },
+            // {
+            //     data: {id: 'el2', name: 'Edit me', description: "Some description", progress: 50, color: "white"},
+            //     position: {x: 0, y: 150},
+            // },
+            // {
+            //     data: {id: 'el3', name: 'Drag me', description: "Some description", progress: 100, color: "white"},
+            //     position: {x: -150, y: 150},
+            // }
         ],
         edges: [
             // {data: {source: 'el1', target: 'el2'}},
-            // {data: /{source: 'el2', target: 'el3'}},
         ]
     },
     layout: {
@@ -73,14 +71,14 @@ cy.on('tap', 'node', function (evt) {
     var node = evt.target;
     if (tipp)
         tipp.hide();
-    console.log(node);
+    // console.log(node);
     prepareEdit(node);
 });
 
 // get EDGE by tap
 cy.on('tap', 'edge', function (evt) {
     let edge = evt.target;
-    console.log(edge.id());
+    // console.log(edge.id());
 });
 
 // Hide info block
@@ -117,8 +115,8 @@ function createNode(e) {
         let x = e.position.x;
         let y = e.position.y;
 
-        console.log(x);
-        console.log(y);
+        // console.log(x);
+        // console.log(y);
 
         let id = 'id' + Math.abs(parseInt(x, 10)) + '_' + Math.abs(parseInt(y, 10));
 
@@ -129,7 +127,7 @@ function createNode(e) {
             selected: true
         };
         cy.add(new_node);
-        console.log(new_node);
+        // console.log(new_node);
 
         let node = cy.$('#' + id);
         prepareEdit(node);
@@ -169,7 +167,7 @@ function removeSelected() {
 
 function merge() {
     selected = cy.$('node:selected').jsons();
-    console.log(selected);
+    // console.log(selected);
 
     for (let i = 0; i < selected.length; i++) {
         for (let j = i; j < selected.length; j++) {
@@ -214,7 +212,7 @@ $('#description').bind('change', function () {
 });
 
 // Change progress
-$('#progress').bind('focusout', function () {
+$('#progress').on('change', function () {
     let id = $('#id').val();
     if ($(this).val() <= 100) {
         cy.$('#' + id).data('progress', $(this).val());
@@ -234,7 +232,7 @@ function zoomDefault() {
 
 function saveModel(id) {
     let data = cy.$('#' + id).json();
-    console.log(data);
+    // console.log(data);
     $.ajax({
         type: 'POST',
         url: '/ajax/save',
@@ -243,7 +241,7 @@ function saveModel(id) {
             "csrfmiddlewaretoken": csrf_token
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
         }
     });
 }
@@ -267,7 +265,7 @@ function sendRemove(elements) {
             "csrfmiddlewaretoken": csrf_token
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
         }
     });
 
@@ -278,7 +276,7 @@ function sendRemove(elements) {
 // Send all data to server (deprecated)
 function save() {
     let data = cy.json();
-    console.log(data);
+    // console.log(data);
 
     $.ajax({
         type: 'POST',
@@ -289,7 +287,7 @@ function save() {
         },
         success: function (response) {
             cy.json(response);
-            console.log(response);
+            // console.log(response);
         }
     });
 }
@@ -360,10 +358,22 @@ $(document).ready(function () {
         type: 'GET',
         url: '/ajax/retrieve',
         success: function (response) {
-            console.log(response);
+            // console.log(response);
             cy.json(response);
             cy.zoom(1);
+
+            if (response.elements.nodes.length === 0) {
+                // alert("Welcome!");
+            }
         }
     });
+});
+
+
+// Slider
+let slider = $('#ranger');
+let progress = $('#progress');
+slider.on('change', function () {
+    progress.val($(this).val());
 });
 
