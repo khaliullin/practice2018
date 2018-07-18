@@ -86,15 +86,11 @@ WSGI_APPLICATION = 'practice2018.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    'postgres': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'db',
+        'NAME': 'd9snkfo4djohk5',
+        'USER': 'zuvguimytjaluo',
+        'PASSWORD': '7826f7bbd10f5a44979197fbb6550ca546a1e7f6ae20f3f35460a5c819c7e009',
+        'HOST': 'ec2-174-129-192-200.compute-1.amazonaws.com'
         'PORT': 5432,
     }
 }
@@ -103,26 +99,26 @@ if os.environ.get('DOCKER_SERVER'):
     DATABASES.pop('default')
     DATABASES['default'] = DATABASES['postgres']
 
-#NEOMODEL
-NEO4J_CREDENTIALS = {
-    'username': os.environ.get('NEO4J_USER'),
-    'password': os.environ.get('NEO4J_PASSWORD')
-}
-NEOMODEL_NEO4J_BOLT_URL = f"bolt://{NEO4J_CREDENTIALS['username']}:{NEO4J_CREDENTIALS['password']}@neo4j:7687"
-NEOMODEL_SIGNALS = True
-NEOMODEL_FORCE_TIMEZONE = False
-NEOMODEL_ENCRYPTED_CONNECTION = True
-NEOMODEL_MAX_POOL_SIZE = 50
+#  #NEOMODEL
+#  NEO4J_CREDENTIALS = {
+#      'username': os.environ.get('NEO4J_USER'),
+#      'password': os.environ.get('NEO4J_PASSWORD')
+#  }
+#  NEOMODEL_NEO4J_BOLT_URL = f"bolt://{NEO4J_CREDENTIALS['username']}:{NEO4J_CREDENTIALS['password']}@neo4j:7687"
+#  NEOMODEL_SIGNALS = True
+#  NEOMODEL_FORCE_TIMEZONE = False
+#  NEOMODEL_ENCRYPTED_CONNECTION = True
+#  NEOMODEL_MAX_POOL_SIZE = 50
 
-# Default config url for neomodel db driver
+#  # Default config url for neomodel db driver
 
-if os.environ.get('DOCKER_SERVER'):
-    DATABASES.pop('default')
-    DATABASES['default'] = DATABASES['postgres']
-    NEOMODEL_NEO4J_BOLT_URL = f"bolt://{NEO4J_CREDENTIALS['username']}:{NEO4J_CREDENTIALS['password']}@neo4j:7687"
-else:
-    #Ivan: put here your configurations of databases, such as NEOMODEL_NEO4J_BOLT_URL
-    pass
+#  if os.environ.get('DOCKER_SERVER'):
+#      DATABASES.pop('default')
+#      DATABASES['default'] = DATABASES['postgres']
+#      NEOMODEL_NEO4J_BOLT_URL = f"bolt://{NEO4J_CREDENTIALS['username']}:{NEO4J_CREDENTIALS['password']}@neo4j:7687"
+#  else:
+#      #Ivan: put here your configurations of databases, such as NEOMODEL_NEO4J_BOLT_URL
+#      pass
 
 from neomodel import config
 config.DATABASE_URL = NEOMODEL_NEO4J_BOLT_URL
